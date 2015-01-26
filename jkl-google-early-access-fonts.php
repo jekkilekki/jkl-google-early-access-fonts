@@ -32,11 +32,11 @@
  * 
  * @link: http://codex.wordpress.org/Theme_Customization_API
  */
-add_action( 'customize_register', 'jkl_gea_fonts' );
-function jkl_gea_fonts( $wp_customize ) {
+add_action( 'customize_register', 'jkl_gea_fonts_customizer' );
+function jkl_gea_fonts_customizer( $wp_customize ) {
     
     // SPECIFY LANGUAGE
-    $languages = array( jkl_gea_get_languages() );
+    $languages = array( get_gea_languages() );
     asort( $languages );
     
     $wp_customize->add_setting( 'gea_language' );
@@ -98,7 +98,36 @@ function jkl_gea_fonts( $wp_customize ) {
 /* -----------------------------------------------------------------------------
  * Helper functions
  * ----------------------------------------------------------------------------- */
-function jkl_gea_get_languages() {
+if ( !function_exists( 'jkl_gea_fonts' ) ) {
+    function jkl_gea_fonts() {
+        
+        $all_gea_fonts = array_keys( 
+                array_merge( get_arabic_fonts(), get_armenian_fonts(), 
+                get_bengali_fonts(), get_cherokee_fonts(), get_chinese_fonts(), 
+                get_ethiopic_fonts(), get_georgian_fonts(), get_gujarati_fonts(), 
+                get_gurmukhi_fonts(), get_hebrew_fonts(), get_hindi_fonts(), 
+                get_japanese_fonts(), get_kannada_fonts(), get_khmer_fonts(), 
+                get_korean_fonts(), get_lao_fonts(), get_malayalam_fonts(),
+                get_myanmar_fonts(), get_osmanya_fonts(), get_sinhala_fonts(), 
+                get_tamil_fonts(), get_telugu_fonts(), get_thai_fonts() ) );
+        
+        $language = get_theme_mod( 'gea_language' ); // Get the selected language
+        
+        // Get the selected font face for each option and put it in an array
+        $selected_fonts[] = get_theme_mod( 'content_fonts' );
+        $selected_fonts[] = get_theme_mod( 'title_fonts' );
+        
+        // Check each font and call the function to enqueue it 
+        foreach ( $selected_fonts as $selected_font ) {
+            
+        }
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * Get language arrays 
+ * ----------------------------------------------------------------------------- */
+function get_gea_languages() {
     
     $gea_languages = array(
         'hebrew'            => 'Hebrew',
@@ -130,6 +159,17 @@ function jkl_gea_get_languages() {
     return $gea_languages;
 }
 
+/**
+ * 
+ * @TODO How can I allow users to use a default font?
+ */
+function get_default_fonts() {
+    
+    $default_fonts = array(
+        ''                                      => 'Default'
+    );
+    return $default_fonts;
+}
 function get_hebrew_fonts() {
     
     $hebrew_fonts = array(
